@@ -19,7 +19,7 @@ class DataService():
     def fetch_todays_games(self):
         """Gets the games played by a team on a given date"""
         self.todays_games = []
-        today = "2022-02-10" # datetime.today().strftime('%Y-%m-%d')
+        today = datetime.today().strftime('%Y-%m-%d')
         response = get(
             "{}/v1/games?start_date={}&end_date={}".format(self.base_url, today, today))
         game_data = loads(response.text)["data"]
