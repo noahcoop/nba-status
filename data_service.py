@@ -41,6 +41,8 @@ class DataService():
         response = get("{}/v1/stats?game_ids[]={}".format(self.base_url, game_id))
         game_data = loads(response.text)["data"]
         message = ""
+        if len(game_data) == 0:
+            return message
         for metric in ["pts", "reb", "ast"]:
             leader = max(game_data, key=lambda x:x[metric] if x[metric] != None else 0)
             if not self.validate_stats_obj(leader):
@@ -56,9 +58,9 @@ class DataService():
         return message
 
     def build_night_message(self):
-        message = "\nFinal scores are in!\n\n"
+        message = "\nTonight's NBA scores!\n\n"
         for game in self.todays_games:
-            message += "{} {} - {} {}\n".format(game["home_team"], game["home_team_score"], game["visitor_team"], game["visitor_team_score"])
+            message += "{} {} - {} {} ({})\n".format(game["home_team"], game["home_team_score"], game["visitor_team"], game["visitor_team_score"], game["status"])
             message += self.fetch_game_stat_leaders(game["id"])
             message += "-----\n"
             sleep(5)
