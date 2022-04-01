@@ -20,7 +20,6 @@ class DataService():
         self.todays_games = []
         eastern = timezone('US/Eastern')
         today = datetime.now(eastern).strftime('%Y-%m-%d')
-        print(today)
         response = get(
             "{}/v1/games?start_date={}&end_date={}".format(self.base_url, today, today))
         game_data = loads(response.text)["data"]
