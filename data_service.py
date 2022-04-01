@@ -1,9 +1,8 @@
 from datetime import datetime
-import struct
-from urllib import response
 from requests import get
 from json import loads
 from time import sleep
+from pytz import timezone
 
 class DataService():
     def __init__(self):
@@ -19,7 +18,9 @@ class DataService():
     def fetch_todays_games(self):
         """Gets the games played by a team on a given date"""
         self.todays_games = []
-        today = datetime.today().strftime('%Y-%m-%d')
+        eastern = timezone('US/Eastern')
+        today = datetime.now(eastern).strftime('%Y-%m-%d')
+        print(today)
         response = get(
             "{}/v1/games?start_date={}&end_date={}".format(self.base_url, today, today))
         game_data = loads(response.text)["data"]
